@@ -18,4 +18,4 @@ fn power_mod(a: Int, owned b:Int, m: Int)raises -> Int:
 
 fn main_package()raises:
 	print_no_newline('a:', 552, 'b:', 79, 'm:', 3337, '=>')
-	print(power_mod(552,79,3337))
+	print(power_mod(a=552, b=79, m=3337))

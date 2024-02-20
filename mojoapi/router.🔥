@@ -1,0 +1,6 @@
+struct App:
+	fn __init__(inout self):
+		pass
+
+	fn __pass__(inout self):
+		pass

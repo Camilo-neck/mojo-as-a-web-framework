@@ -1,0 +1,55 @@
+from python import Python as py
+
+struct Request:
+
+	var environ: PythonObject
+	var cgi: PythonObject
+	var http_host: String
+	var http_user_agent: String
+	var lang: String
+	var method: String
+	var path: String
+	var host_address: String
+	var gateway_interface: String
+	var server_port: String
+	var remote_host: String
+	var content_type: String
+	var content_length: String
+	var body: String
+	var query_string: String
+
+	var server_protocol: String
+	var server_software: String
+	var start_response: PythonObject
+
+	fn __init__(inout self, environ: PythonObject, start_response: PythonObject)raises:
+		"""The variables here just hold data extracted from the wsgi environ and the startresponse function."""
+		self.cgi = py.import_module('cgi')
+		self.environ = environ
+		self.http_host = environ['HTTP_HOST']
+		self.http_user_agent = environ['HTTP_USER_AGENT']
+		self.lang = environ.get('LANG')
+		self.method = environ.get('REQUEST_METHOD')
+		self.path = environ.get('PATH_INFO')
+		self.host_address = environ.get('HTTP_HOST')
+		self.gateway_interface = environ.get('GATEWAY_INTERFACE')
+		self.server_port = environ.get('SERVER_PORT')
+		self.remote_host = environ.get('REMOTE_HOST')
+		self.content_type = environ.get('CONTENT_TYPE')
+		self.content_length = environ.get('CONTENT_LENGTH')
+		self.body = environ.get('BODY')
+		self.query_string = environ.get('QUERY_STRING')
+		self.server_protocol = environ.get('SEVER_PROTOCOL')
+		self.server_software = environ.get('SERVER_SOFTWARE')
+		self.start_response = start_response
+		self.parse_q()
+
+	fn parse_q(self) raises:
+		if self.method != 'POST':
+			return
+		let environ = self.environ
+		let field_storage = self.cgi.FieldStorage
+		field_storage(fp=environ['wsgi.input'], environ=environ, keep_blank_values=True)
+		for item in field_storage.list:
+			print(item)
+
